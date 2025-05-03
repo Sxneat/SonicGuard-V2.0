@@ -8,8 +8,8 @@
 #define TRIGGER_PIN2  8  // Pin trigger sensor 2
 #define ECHO_PIN2     7  // Pin echo sensor 2
 
-#define MAX_DISTANCE1 500 // Maximum distance we want to ping for (in centimeters)
-#define MAX_DISTANCE2 500 // Maximum distance we want to ping for (in centimeters)
+#define MAX_DISTANCE1 800 // Maximum distance we want to ping for (in centimeters)
+#define MAX_DISTANCE2 800 // Maximum distance we want to ping for (in centimeters)
 
 // กำหนดพินสำหรับการใช้งานเสียง
 const int buzzerPin1 = 9;  // พินสำหรับเสียง sensor 1
@@ -29,14 +29,12 @@ float previousTime1 = 0;     // เวลาก่อนหน้า (วิน�
 float currentDistance1 = 0;  // ระยะทางปัจจุบัน (เมตร)
 float currentTime1 = 0;      // เวลาปัจจุบัน (วินาที)
 float velocity1 = 0;         // ความเร็ว (เมตร/วินาที)
-//float acceleration1 = 0;     // อัตราเร่ง (เมตร/วินาที^2)
 
 float previousDistance2 = 0; // ระยะทางก่อนหน้า (เมตร)
 float previousTime2 = 0;     // เวลาก่อนหน้า (วินาที)
 float currentDistance2 = 0;  // ระยะทางปัจจุบัน (เมตร)
 float currentTime2 = 0;      // เวลาปัจจุบัน (วินาที)
 float velocity2 = 0;         // ความเร็ว (เมตร/วินาที)
-//float acceleration2 = 0;     // อัตราเร่ง (เมตร/วินาที^2)
 
 void setup() 
 {
@@ -63,15 +61,19 @@ void loop()
     velocity1 = deltaDistance1 / deltaTime1;
   }
 
+  // คำนวณอัตราเร่ง (a = Δv / Δt)
+  /*float deltaVelocity1 = velocity1 - (deltaDistance1 / deltaTime1);
+  if (deltaTime1 > 0) 
+  {
+    acceleration1 = deltaVelocity1 / deltaTime1;
+  }*/
+
   // แสดงข้อมูล
   Serial.print("Distance1: "); // ระยะทางปัจจุบัน (เมตร)
   Serial.print(distance1);
   Serial.print(" cm, Velocity1: "); // ความเร็ว (เมตร/วินาที)
   Serial.print(velocity1);
-  Serial.print(" m/s");
-  Serial.print("        Acceleration: "); // อัตราเร่ง (เมตร/วินาที^2)
-  Serial.print(acceleration);
-  Serial.print(" m/s^2");
+   Serial.print(" m/s");
 
   // อัปเดตค่าก่อนหน้า
   previousDistance1 = distance1;  //ระยะทางก่อนหน้า = distance
@@ -131,7 +133,10 @@ void loop()
   Serial.println(" cm");
 
   // การทำงานของ sensor 1 
-    if(distance1 > 10 && distance1 <= 100)
+  //if (distance1 > 10 && distance1 <= 100 ||  distance2 > 10 && distance2 <= 100 ) // ระยะ 20 - 100 cm
+  //{
+    if(distance1 > 50 && distance1 <= 800  && velocity1 < -9 && velocity1 < 0   && velocity1 != 9.35 && velocity1 != -9.35 && velocity1 != 9.43 && velocity1 != -9.43  && velocity1 != -74.77  && velocity1 != -35.3 && velocity1 != -379.77  && velocity1 != -376.64  && velocity1 != -376.11  && velocity1 != -365.85  && velocity1 != -349.99  && velocity1 != -337.49  && velocity1 != -384.68  && velocity1 != -182.93  && velocity1 != -361.48 && velocity1 != -520  && velocity1 != -7.94  && velocity1 != -6.71  && velocity1 != -341.27  && velocity1 != -8.0  && velocity1 != -7.69  && velocity1 != -6.67  && velocity1 != -7.75  && velocity1 != -7.25)
+    //if(distance1 > 50 && distance1 <= 800 )
     {
       digitalWrite(LED_1, LOW);  // LED ON
       digitalWrite(buzzerPin1, HIGH); 
@@ -144,7 +149,8 @@ void loop()
       digitalWrite(buzzerPin1, LOW); // หยุดเสียง sensor 1
     }
  
-    if(distance2 > 10 && distance2 <= 100)
+    if(distance2 > 50 && distance2 <= 800 && velocity2 < -9  && velocity2 < 0  && velocity2 != 9.35 && velocity2 != -9.35 && velocity2 != 9.43 && velocity2 != -9.43  && velocity2 != -74.77  && velocity2 != -35.3 && velocity2 != -379.77  && velocity2 != -376.64  && velocity2 != -376.11  && velocity2 != -365.85  && velocity2 != -349.99  && velocity2 != -337.49  && velocity2 != -384.68  && velocity2 != -182.93  && velocity2 != -361.48  && velocity2 != -520  && velocity2 != -7.94  && velocity2 != -6.71  && velocity2 != -341.27  && velocity2 != -8.0  && velocity2 != -7.69  && velocity2 != -6.67  && velocity2 != -7.75  && velocity2 != -7.25)
+    //if(distance2 > 50 && distance2 <= 800 )
     {
       digitalWrite(LED_2, LOW);  // LED ON
       digitalWrite(buzzerPin1, HIGH); 
@@ -157,9 +163,6 @@ void loop()
       digitalWrite(buzzerPin1, LOW); // หยุดเสียง sensor 1.
     }
 
-
 }
-
-
 
 
